@@ -1,12 +1,16 @@
 # main.py
 import sys
 import logging
-import duallog
+
 import cli
 from utils.utils import multiply
-duallog.setup('logtest')
+
+
+# https://github.com/borntyping/python-colorlog
+
+
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+
 # log = logging.getLogger(__name__)
 def add(a, b):
     log.info(f"W Adding {a}+{b}={a+b}")
