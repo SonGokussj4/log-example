@@ -8,5 +8,5 @@ def multiply(a, b):
     log.warning(f"W UTILS Multiplying {a}*{b}={a*b}")
     log.error(f"E UTILS Multiplying {a}*{b}={a*b}")
     log.critical(f"C UTILS Multiplying {a}*{b}={a*b}")
-    # log.success(f"S UTILS Multiplying {a}*{b}={a*b}")
+    log.success(f"S UTILS Multiplying {a}*{b}={a*b}")
     return a * b
