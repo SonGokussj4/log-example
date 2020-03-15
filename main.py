@@ -107,6 +107,26 @@ fhandler.setLevel(logging.TRACE)
 fhandler.setFormatter(formatter)
 logging.root.addHandler(fhandler)
 
+# Add file rotating handler, with level DEBUG
+rotatingHandler = logging.handlers.RotatingFileHandler(filename='rotating.log', maxBytes=1000000, backupCount=5)
+rotatingHandler.setLevel(logging.TRACE)
+formatter = logging.Formatter(
+    fmt='%(asctime)s - %(levelname)-8s | %(message)s [%(filename)s:%(funcName)s:%(lineno)s]',
+    datefmt='%Y-%m-%d %H:%M:%S')
+rotatingHandler.setFormatter(formatter)
+# logging.root.addHandler(fhandler)
+logging.getLogger().addHandler(rotatingHandler)
+
+# Add file rotating handler, with level DEBUG
+timedRotatingHandler = logging.handlers.TimedRotatingFileHandler(filename='timedRotating.log', when='midnight', backupCount=10)
+timedRotatingHandler.setLevel(logging.TRACE)
+formatter = logging.Formatter(
+    fmt='%(asctime)s - %(levelname)-8s | %(message)s [%(filename)s:%(funcName)s:%(lineno)s]',
+    datefmt='%Y-%m-%d %H:%M:%S')
+timedRotatingHandler.setFormatter(formatter)
+# logging.root.addHandler(fhandler)
+logging.getLogger().addHandler(timedRotatingHandler)
+
 
 def add(a, b):
     log.info(f"W Adding {a}+{b}={a+b}")
@@ -117,26 +137,29 @@ def main():
     args = parser.parse_args()
     print(f">>> args: {args}")
 
+    console = logging.StreamHandler(sys.stdout)
     if args.v == 4:
-        logging.root.setLevel(logging.TRACE)
+        console.setLevel(logging.TRACE)
         fmt = ColorFormatter('[%(levelname)s]: %(message)s (%(filename)s:%(lineno)s)')
     elif args.v == 3:
-        logging.root.setLevel(logging.DEBUG)
+        console.setLevel(logging.DEBUG)
         fmt = ColorFormatter('[%(levelname)s]: %(message)s (%(filename)s:%(lineno)s)')
     elif args.v == 2:
-        logging.root.setLevel(logging.INFO)
+        console.setLevel(logging.INFO)
         fmt = ColorFormatter('[%(levelname)s]: %(message)s')
     elif args.v == 1:
-        logging.root.setLevel(logging.WARNING)
+        console.setLevel(logging.WARNING)
         fmt = ColorFormatter('[%(levelname)s]: %(message)s')
     else:
-        logging.root.setLevel(logging.ERROR)
+        console.setLevel(logging.ERROR)
         fmt = ColorFormatter('[%(levelname)s]: %(message)s')
-
-    # Create STREAM HANDLER
-    console = logging.StreamHandler(sys.stdout)
     console.setFormatter(fmt)
     logging.getLogger().addHandler(console)  # add to root logger
+
+    # # Create STREAM HANDLER
+    # console = logging.StreamHandler(sys.stdout)
+    # console.setFormatter(fmt)
+    # logging.getLogger().addHandler(console)  # add to root logger
 
     log.trace(f"T MAIN Totally detailed message")
     log.info(f"E MAIN Log level: {logging.root.level}")
